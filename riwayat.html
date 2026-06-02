@@ -5,16 +5,299 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Riwayat Data | Monitoring IoT</title>
   <meta name="description" content="Riwayat lengkap data sensor IoT. Filter dan unduh data historis untuk analisis." />
-  <link rel="stylesheet" href="css/style.css" />
-  <link rel="stylesheet" href="css/dashboard.css" />
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Segoe UI', 'Poppins', Arial, sans-serif;
+    }
+
+    body {
+      background: #f3f4f6;
+    }
+
+    /* ================= SIDEBAR ================= */
+    .app-shell {
+      display: flex;
+      min-height: 100vh;
+    }
+
+    .sidebar {
+      width: 260px;
+      background: #111827;
+      color: white;
+      position: fixed;
+      left: 0;
+      top: 0;
+      height: 100vh;
+      padding: 20px;
+      z-index: 1000;
+    }
+
+    .sidebar-brand {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 40px;
+      font-size: 20px;
+      font-weight: bold;
+    }
+
+    .sidebar-brand img {
+      width: 40px;
+      height: 40px;
+      border-radius: 10px;
+      background: #2563eb;
+    }
+
+    .sidebar-nav {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .sidebar-nav a {
+      text-decoration: none;
+      color: white;
+      padding: 14px 16px;
+      border-radius: 12px;
+      transition: 0.3s;
+      display: block;
+    }
+
+    .sidebar-nav a:hover {
+      background: rgba(255, 255, 255, 0.1);
+    }
+
+    .sidebar-nav a.active {
+      background: #2563eb;
+    }
+
+    .logout {
+      margin-top: 20px;
+      background: #dc2626;
+    }
+
+    .logout:hover {
+      background: #b91c1c !important;
+    }
+
+    /* ================= MAIN ================= */
+    .main {
+      margin-left: 260px;
+      width: calc(100% - 260px);
+      padding: 25px;
+    }
+
+    /* ================= TOPBAR ================= */
+    .topbar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 25px;
+      background: white;
+      padding: 20px 25px;
+      border-radius: 20px;
+      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+    }
+
+    .topbar h1 {
+      font-size: 28px;
+      margin-bottom: 5px;
+      color: #1f2937;
+    }
+
+    .muted {
+      color: #6b7280;
+      font-size: 14px;
+    }
+
+    .topbar-actions {
+      display: flex;
+      align-items: center;
+      gap: 15px;
+    }
+
+    .status-pill {
+      background: #f3f4f6;
+      padding: 10px 14px;
+      border-radius: 20px;
+      font-size: 14px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      color: #1f2937;
+      font-weight: 500;
+    }
+
+    .dot {
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      display: inline-block;
+    }
+
+    .online {
+      background: #22c55e;
+      box-shadow: 0 0 5px #22c55e;
+    }
+
+    .offline {
+      background: #ef4444;
+    }
+
+    .avatar {
+      width: 42px;
+      height: 42px;
+      border-radius: 50%;
+      background: #2563eb;
+      color: white;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      font-weight: bold;
+    }
+
+    /* ================= PANEL ================= */
+    .panel {
+      background: white;
+      border-radius: 20px;
+      padding: 20px;
+      margin-bottom: 25px;
+      box-shadow: 0 5px 20px rgba(0, 0, 0, 0.06);
+    }
+
+    .panel-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 20px;
+      flex-wrap: wrap;
+      gap: 12px;
+    }
+
+    .panel-header h3 {
+      font-size: 20px;
+      color: #1f2937;
+    }
+
+    /* ================= FILTER ================= */
+    select {
+      padding: 8px 12px;
+      border-radius: 8px;
+      border: 1px solid #e5e7eb;
+      background: white;
+      color: #374151;
+      cursor: pointer;
+      outline: none;
+      font-size: 14px;
+    }
+
+    select:hover {
+      border-color: #2563eb;
+    }
+
+    /* ================= TABLE ================= */
+    .table-wrap {
+      overflow-x: auto;
+    }
+
+    .data-table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+
+    .data-table th,
+    .data-table td {
+      padding: 14px;
+      text-align: left;
+      border-bottom: 1px solid #e5e7eb;
+      color: #374151;
+    }
+
+    .data-table th {
+      background: #f9fafb;
+      font-weight: 600;
+      color: #1f2937;
+    }
+
+    .data-table tr:hover {
+      background: #f9fafb;
+    }
+
+    .badge-pill {
+      padding: 4px 12px;
+      border-radius: 20px;
+      font-size: 12px;
+      font-weight: 600;
+    }
+
+    .badge-pill.ok {
+      background: #dcfce7;
+      color: #166534;
+    }
+
+    .badge-pill.err {
+      background: #fee2e2;
+      color: #991b1b;
+    }
+
+    .badge-pill.warn {
+      background: #fed7aa;
+      color: #92400e;
+    }
+
+    /* ================= CHART ================= */
+    canvas {
+      max-height: 300px;
+      width: 100% !important;
+    }
+
+    /* ================= RESPONSIVE ================= */
+    @media (max-width: 900px) {
+      .sidebar {
+        width: 220px;
+      }
+      .main {
+        margin-left: 220px;
+        width: calc(100% - 220px);
+      }
+    }
+
+    @media (max-width: 700px) {
+      .sidebar {
+        position: relative;
+        width: 100%;
+        height: auto;
+      }
+      .app-shell {
+        flex-direction: column;
+      }
+      .main {
+        margin-left: 0;
+        width: 100%;
+      }
+      .topbar {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 15px;
+      }
+      .panel-header {
+        flex-direction: column;
+        align-items: stretch;
+      }
+    }
+  </style>
 </head>
 <body>
   <div class="app-shell">
     <!-- Sidebar -->
     <aside class="sidebar">
       <div class="sidebar-brand">
-        <img src="img/logo.png" alt="Logo" />
+        <img src="img/logo.png" alt="Logo" onerror="this.style.display='none'">
         <span>Monitoring<strong>IoT</strong></span>
       </div>
       <nav class="sidebar-nav">
@@ -30,30 +313,34 @@
     <main class="main">
       <header class="topbar">
         <div>
-          <h1>Riwayat Data</h1>
+          <h1>📜 Riwayat Data</h1>
           <p class="muted">Lihat dan analisis data historis dari semua sensor.</p>
         </div>
         <div class="topbar-actions">
-          <div class="status-pill"><span class="dot online"></span> Terhubung</div>
+          <div class="status-pill">
+            <span class="dot online"></span>
+            <span id="connectionStatus">Terhubung</span>
+          </div>
           <div class="avatar">U</div>
         </div>
       </header>
 
       <!-- Filter -->
-      <section class="panel" style="padding: 16px 20px;">
-        <div class="panel-header" style="flex-wrap:wrap;gap:12px;">
-          <h3>Filter Data</h3>
+      <section class="panel">
+        <div class="panel-header">
+          <h3>🔍 Filter Data</h3>
           <div style="display:flex;gap:10px;flex-wrap:wrap;">
-            <select id="filterSensor" style="padding:6px 12px;border-radius:8px;border:1px solid var(--border);background:var(--surface);color:var(--text)">
+            <select id="filterSensor">
               <option value="all">Semua Sensor</option>
-              <option value="dht22">DHT22 (Suhu/Kelembapan)</option>
-              <option value="bmp280">BMP280 (Tekanan)</option>
-              <option value="ldr">LDR (Cahaya)</option>
+              <option value="suhu">🌡️ Suhu</option>
+              <option value="kelembapan">💧 Kelembapan</option>
+              <option value="tekanan">📊 Tekanan</option>
+              <option value="cahaya">☀️ Cahaya</option>
             </select>
-            <select id="filterRange" style="padding:6px 12px;border-radius:8px;border:1px solid var(--border);background:var(--surface);color:var(--text)">
-              <option>24 Jam Terakhir</option>
-              <option>7 Hari</option>
-              <option>30 Hari</option>
+            <select id="filterRange">
+              <option value="24">24 Jam Terakhir</option>
+              <option value="7">7 Hari</option>
+              <option value="30">30 Hari</option>
             </select>
           </div>
         </div>
@@ -62,16 +349,16 @@
       <!-- Chart -->
       <section class="panel">
         <div class="panel-header">
-          <h3>Grafik Riwayat Sensor</h3>
+          <h3>📈 Grafik Riwayat Sensor</h3>
         </div>
-        <canvas id="historyChart" height="110"></canvas>
+        <canvas id="historyChart" height="120"></canvas>
       </section>
 
       <!-- Tabel Riwayat -->
       <section class="panel">
         <div class="panel-header">
-          <h3>Log Data Sensor</h3>
-          <span id="rowCount" class="badge-pill ok">0 entri</span>
+          <h3>📋 Log Data Sensor</h3>
+          <span id="rowCount" class="badge-pill ok">Memuat...</span>
         </div>
         <div class="table-wrap">
           <table class="data-table">
@@ -84,7 +371,7 @@
               </tr>
             </thead>
             <tbody id="historyTable">
-              <tr><td colspan="4" style="text-align:center;color:var(--muted)">Memuat data...</td></tr>
+              <tr><td colspan="4" style="text-align:center; color:#9ca3af;">Memuat data...</td></tr>
             </tbody>
           </table>
         </div>
@@ -92,58 +379,230 @@
     </main>
   </div>
 
-  <script type="module" src="js/dashboard.js"></script>
   <script>
-    // Render chart riwayat
-    fetch('data/dummy.json').then(r => r.json()).then(data => {
-      // Chart
+    // Data dummy lengkap
+    const dummyData = {
+      suhu: 28.5,
+      kelembapan: 72,
+      tekanan: 1012,
+      cahaya: 580,
+      chart: {
+        labels: ['00:00', '04:00', '08:00', '12:00', '16:00', '20:00'],
+        suhu: [26.2, 25.8, 27.5, 30.2, 29.8, 27.5],
+        kelembapan: [75, 78, 72, 65, 68, 72],
+        tekanan: [1014, 1013, 1012, 1011, 1011, 1012],
+        cahaya: [0, 45, 320, 580, 420, 120]
+      },
+      history: [
+        { waktu: '08:00:00', sensor: 'Suhu', nilai: '28.5°C', status: 'OK' },
+        { waktu: '08:00:00', sensor: 'Kelembapan', nilai: '72%', status: 'OK' },
+        { waktu: '08:00:00', sensor: 'Tekanan', nilai: '1012 hPa', status: 'OK' },
+        { waktu: '08:00:00', sensor: 'Cahaya', nilai: '580 lx', status: 'OK' },
+        { waktu: '07:00:00', sensor: 'Suhu', nilai: '27.8°C', status: 'OK' },
+        { waktu: '07:00:00', sensor: 'Kelembapan', nilai: '74%', status: 'OK' },
+        { waktu: '07:00:00', sensor: 'Tekanan', nilai: '1013 hPa', status: 'OK' },
+        { waktu: '07:00:00', sensor: 'Cahaya', nilai: '320 lx', status: 'OK' },
+        { waktu: '06:00:00', sensor: 'Suhu', nilai: '26.5°C', status: 'OK' },
+        { waktu: '06:00:00', sensor: 'Kelembapan', nilai: '76%', status: 'OK' },
+        { waktu: '06:00:00', sensor: 'Tekanan', nilai: '1013 hPa', status: 'OK' },
+        { waktu: '06:00:00', sensor: 'Cahaya', nilai: '120 lx', status: 'OK' },
+        { waktu: '05:00:00', sensor: 'Suhu', nilai: '25.9°C', status: 'OK' },
+        { waktu: '05:00:00', sensor: 'Cahaya', nilai: '45 lx', status: 'WARN' },
+        { waktu: '04:00:00', sensor: 'Suhu', nilai: '25.2°C', status: 'OK' },
+        { waktu: '04:00:00', sensor: 'Cahaya', nilai: '0 lx', status: 'ERR' }
+      ]
+    };
+
+    let chartInstance = null;
+
+    // Fungsi render chart
+    function renderChart(data, filterSensor = 'all') {
       const ctx = document.getElementById('historyChart');
-      new Chart(ctx, {
+      
+      if (chartInstance) {
+        chartInstance.destroy();
+      }
+
+      let datasets = [];
+      
+      if (filterSensor === 'all' || filterSensor === 'suhu') {
+        datasets.push({
+          label: 'Suhu (°C)',
+          data: data.chart?.suhu || dummyData.chart.suhu,
+          borderColor: '#ef4444',
+          backgroundColor: 'rgba(239,68,68,0.1)',
+          fill: true,
+          tension: 0.4,
+          borderWidth: 2,
+          pointRadius: 4
+        });
+      }
+      
+      if (filterSensor === 'all' || filterSensor === 'kelembapan') {
+        datasets.push({
+          label: 'Kelembapan (%)',
+          data: data.chart?.kelembapan || dummyData.chart.kelembapan,
+          borderColor: '#06b6d4',
+          backgroundColor: 'rgba(6,182,212,0.08)',
+          fill: true,
+          tension: 0.4,
+          borderWidth: 2,
+          pointRadius: 4
+        });
+      }
+      
+      if (filterSensor === 'all' || filterSensor === 'tekanan') {
+        datasets.push({
+          label: 'Tekanan (hPa)',
+          data: data.chart?.tekanan || dummyData.chart.tekanan,
+          borderColor: '#10b981',
+          backgroundColor: 'rgba(16,185,129,0.08)',
+          fill: true,
+          tension: 0.4,
+          borderWidth: 2,
+          pointRadius: 4
+        });
+      }
+      
+      if (filterSensor === 'all' || filterSensor === 'cahaya') {
+        datasets.push({
+          label: 'Cahaya (lx)',
+          data: data.chart?.cahaya || dummyData.chart.cahaya,
+          borderColor: '#f59e0b',
+          backgroundColor: 'rgba(245,158,11,0.08)',
+          fill: true,
+          tension: 0.4,
+          borderWidth: 2,
+          pointRadius: 4
+        });
+      }
+
+      chartInstance = new Chart(ctx, {
         type: 'line',
         data: {
-          labels: data.chart?.labels || [],
-          datasets: [
-            {
-              label: 'Suhu (°C)',
-              data: data.chart?.suhu || [],
-              borderColor: '#4f46e5',
-              backgroundColor: 'rgba(79,70,229,.1)',
-              fill: true, tension: .4, borderWidth: 2, pointRadius: 4
-            },
-            {
-              label: 'Kelembapan (%)',
-              data: data.chart?.kelembapan || [],
-              borderColor: '#06b6d4',
-              backgroundColor: 'rgba(6,182,212,.08)',
-              fill: true, tension: .4, borderWidth: 2, pointRadius: 4
-            }
-          ]
+          labels: data.chart?.labels || dummyData.chart.labels,
+          datasets: datasets
         },
         options: {
           responsive: true,
+          maintainAspectRatio: true,
           plugins: {
-            legend: { position: 'bottom', labels: { boxWidth: 10, usePointStyle: true, padding: 20 } },
-            tooltip: { backgroundColor: 'rgba(15,23,42,0.9)', titleColor: '#94a3b8', bodyColor: '#f1f5f9', padding: 12, cornerRadius: 8 }
+            legend: { 
+              position: 'bottom', 
+              labels: { 
+                boxWidth: 10, 
+                usePointStyle: true, 
+                padding: 20,
+                color: '#374151'
+              } 
+            },
+            tooltip: { 
+              backgroundColor: '#1f2937', 
+              titleColor: '#f3f4f6', 
+              bodyColor: '#d1d5db', 
+              padding: 12, 
+              cornerRadius: 8 
+            }
           },
           scales: {
-            y: { grid: { color: 'rgba(148,163,184,0.1)' }, ticks: { color: '#94a3b8' } },
-            x: { grid: { display: false }, ticks: { color: '#94a3b8' } }
+            y: { 
+              grid: { color: 'rgba(148,163,184,0.1)' }, 
+              ticks: { color: '#6b7280' } 
+            },
+            x: { 
+              grid: { display: false }, 
+              ticks: { color: '#6b7280' } 
+            }
           }
         }
       });
+    }
 
-      // Tabel
-      const rows = data.history || [];
+    // Fungsi render tabel
+    function renderTable(data, filterSensor = 'all') {
+      let rows = data.history || dummyData.history;
+      
+      // Filter berdasarkan sensor
+      if (filterSensor !== 'all') {
+        const sensorMap = {
+          'suhu': 'Suhu',
+          'kelembapan': 'Kelembapan',
+          'tekanan': 'Tekanan',
+          'cahaya': 'Cahaya'
+        };
+        rows = rows.filter(r => r.sensor === sensorMap[filterSensor]);
+      }
+      
       document.getElementById('rowCount').textContent = `${rows.length} entri`;
+      
+      if (rows.length === 0) {
+        document.getElementById('historyTable').innerHTML = '<tr><td colspan="4" style="text-align:center; color:#9ca3af;">Tidak ada data</td></tr>';
+        return;
+      }
+      
       document.getElementById('historyTable').innerHTML = rows.map(r => `
         <tr>
-          <td>${r.waktu}</td>
+          <td><strong>${r.waktu}</strong></td>
           <td>${r.sensor}</td>
           <td>${r.nilai}</td>
-          <td><span class="badge-pill ${r.status === 'OK' ? 'ok' : r.status === 'WARN' ? 'warn' : 'err'}">${r.status}</span></td>
+          <td><span class="badge-pill ${r.status === 'OK' ? 'ok' : (r.status === 'WARN' ? 'warn' : 'err')}">${r.status}</span></td>
         </tr>
       `).join('');
-    }).catch(() => {});
+    }
+
+    // Load data
+    async function loadHistoryData() {
+      try {
+        const response = await fetch('data/dummy.json');
+        if (!response.ok) throw new Error('File tidak ditemukan');
+        const data = await response.json();
+        
+        // Gabungkan dengan dummy data
+        const fullData = {
+          ...dummyData,
+          ...data,
+          chart: { ...dummyData.chart, ...data.chart },
+          history: data.history || dummyData.history
+        };
+        
+        const filterSensor = document.getElementById('filterSensor').value;
+        renderChart(fullData, filterSensor);
+        renderTable(fullData, filterSensor);
+        
+        document.getElementById('connectionStatus').textContent = 'Terhubung';
+        document.querySelector('.dot').className = 'dot online';
+      } catch (error) {
+        console.warn('Pakai data default:', error.message);
+        const filterSensor = document.getElementById('filterSensor').value;
+        renderChart(dummyData, filterSensor);
+        renderTable(dummyData, filterSensor);
+        
+        document.getElementById('connectionStatus').textContent = 'Mode Offline';
+        document.querySelector('.dot').className = 'dot offline';
+      }
+    }
+
+    // Event listener filter
+    document.getElementById('filterSensor').addEventListener('change', () => {
+      loadHistoryData();
+    });
+    
+    document.getElementById('filterRange').addEventListener('change', () => {
+      // Bisa ditambahin logic filter berdasarkan range
+      loadHistoryData();
+    });
+
+    // Logout
+    document.getElementById('logoutBtn')?.addEventListener('click', (e) => {
+      e.preventDefault();
+      if(confirm('Yakin mau keluar?')) {
+        localStorage.removeItem('user');
+        window.location.href = 'index.html';
+      }
+    });
+
+    // Jalankan
+    loadHistoryData();
   </script>
 </body>
 </html>
