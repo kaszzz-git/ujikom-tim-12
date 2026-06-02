@@ -1,3 +1,30 @@
+/* ========== CSS VARIABLES ========== */
+:root {
+  --primary: #4f46e5;
+  --primary-hover: #4338ca;
+  --text: #1e293b;
+  --text-soft: #64748b;
+  --border: #e2e8f0;
+  --danger: #ef4444;
+  --success: #10b981;
+  --gradient: linear-gradient(135deg, #4f46e5 0%, #7c3aed 100%);
+  --white: #ffffff;
+}
+
+/* ========== RESET & BASE ========== */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  color: var(--text);
+  line-height: 1.5;
+}
+
+/* ========== LOGIN PAGE ========== */
 .login-body {
   min-height: 100vh;
   display: grid;
@@ -10,21 +37,60 @@
 }
 
 .login-wrapper {
-  width: 100%; max-width: 980px;
-  display: grid; grid-template-columns: 1fr 1fr;
-  background: #fff;
+  width: 100%;
+  max-width: 980px;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  background: var(--white);
   border-radius: 22px;
   overflow: hidden;
   box-shadow: 0 30px 80px rgba(0,0,0,.45);
 }
 
-.login-card { padding: 48px 44px; }
-.login-brand { text-align: center; margin-bottom: 32px; }
-.login-brand img { width: 48px; height: 48px; margin: 0 auto 12px; }
-.login-brand h1 { font-size: 24px; font-weight: 800; letter-spacing: -.01em; }
-.login-brand p { color: var(--text-soft); font-size: 14px; margin-top: 6px; }
-.login-form .form-group { margin-bottom: 18px; }
-.login-form label { display: block; font-size: 13px; font-weight: 600; margin-bottom: 6px; color: var(--text); }
+/* ========== LOGIN CARD (LEFT SIDE) ========== */
+.login-card {
+  padding: 48px 44px;
+  background: var(--white);
+}
+
+.login-brand {
+  text-align: center;
+  margin-bottom: 32px;
+}
+
+.login-brand img {
+  width: 48px;
+  height: 48px;
+  margin: 0 auto 12px;
+  display: block;
+}
+
+.login-brand h1 {
+  font-size: 24px;
+  font-weight: 800;
+  letter-spacing: -0.01em;
+  color: var(--text);
+}
+
+.login-brand p {
+  color: var(--text-soft);
+  font-size: 14px;
+  margin-top: 6px;
+}
+
+/* ========== FORM STYLES ========== */
+.login-form .form-group {
+  margin-bottom: 18px;
+}
+
+.login-form label {
+  display: block;
+  font-size: 13px;
+  font-weight: 600;
+  margin-bottom: 6px;
+  color: var(--text);
+}
+
 .login-form input[type="email"],
 .login-form input[type="password"] {
   width: 100%;
@@ -32,50 +98,28 @@
   border-radius: 10px;
   border: 1px solid var(--border);
   font-size: 14px;
-  transition: border .15s ease, box-shadow .15s ease;
+  transition: border 0.15s ease, box-shadow 0.15s ease;
   outline: none;
   background: #fafbfd;
+  font-family: inherit;
 }
+
 .login-form input:focus {
   border-color: var(--primary);
   box-shadow: 0 0 0 4px rgba(79,70,229,.12);
-  background: #fff;
+  background: var(--white);
 }
-.form-row {
-  display: flex; align-items: center; justify-content: space-between;
-  margin: 8px 0 20px;
-}
-.checkbox { font-size: 13px; color: var(--text-soft); display: flex; align-items: center; gap: 6px; }
-.link { color: var(--primary); font-size: 13px; font-weight: 600; }
-.link:hover { text-decoration: underline; }
-.form-message { margin-top: 14px; font-size: 13px; text-align: center; min-height: 18px; }
-.form-message.error { color: var(--danger); }
-.form-message.success { color: var(--success); }
-.form-footer { margin-top: 22px; text-align: center; font-size: 13px; color: var(--text-soft); }
 
-.login-art {
-  position: relative;
-  background: var(--gradient);
-  color: #fff;
-  display: grid; place-items: center;
-  padding: 48px;
-  overflow: hidden;
-}
-.login-art::before {
-  content: ''; position: absolute; inset: 0;
-  background: radial-gradient(400px 200px at 80% 20%, rgba(255,255,255,.25), transparent 60%);
-}
-.art-content { position: relative; z-index: 1; text-align: center; max-width: 320px; }
-.art-content h2 { font-size: 32px; font-weight: 800; line-height: 1.15; }
-.art-content p { margin-top: 12px; opacity: .9; font-size: 14px; }
-
+/* ========== PASSWORD FIELD ========== */
 .input-wrapper {
   position: relative;
   width: 100%;
 }
+
 .login-form .input-wrapper input {
-  padding-right: 42px !important; /* Beri ruang agar teks sandi tidak menimpa ikon mata */
+  padding-right: 42px !important;
 }
+
 .toggle-pass-btn {
   position: absolute;
   right: 12px;
@@ -91,13 +135,146 @@
   justify-content: center;
   outline: none;
   transition: opacity 0.2s ease;
+  z-index: 2;
 }
+
 .toggle-pass-btn:hover {
   opacity: 0.8;
 }
 
+/* ========== FORM ROW ========== */
+.form-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin: 8px 0 20px;
+}
+
+.checkbox {
+  font-size: 13px;
+  color: var(--text-soft);
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  cursor: pointer;
+}
+
+.checkbox input[type="checkbox"] {
+  cursor: pointer;
+}
+
+.link {
+  color: var(--primary);
+  font-size: 13px;
+  font-weight: 600;
+  text-decoration: none;
+}
+
+.link:hover {
+  text-decoration: underline;
+}
+
+/* ========== BUTTON ========== */
+.btn {
+  display: inline-block;
+  padding: 12px 24px;
+  border-radius: 10px;
+  border: none;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  font-family: inherit;
+}
+
+.btn-primary {
+  background: var(--gradient);
+  color: var(--white);
+}
+
+.btn-primary:hover {
+  opacity: 0.9;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(79,70,229,.3);
+}
+
+.btn-block {
+  width: 100%;
+}
+
+/* ========== MESSAGES ========== */
+.form-message {
+  margin-top: 14px;
+  font-size: 13px;
+  text-align: center;
+  min-height: 18px;
+}
+
+.form-message.error {
+  color: var(--danger);
+}
+
+.form-message.success {
+  color: var(--success);
+}
+
+/* ========== FOOTER ========== */
+.form-footer {
+  margin-top: 22px;
+  text-align: center;
+  font-size: 13px;
+  color: var(--text-soft);
+}
+
+/* ========== RIGHT SIDE ART ========== */
+.login-art {
+  position: relative;
+  background: var(--gradient);
+  color: var(--white);
+  display: grid;
+  place-items: center;
+  padding: 48px;
+  overflow: hidden;
+}
+
+.login-art::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(400px 200px at 80% 20%, rgba(255,255,255,.25), transparent 60%);
+}
+
+.art-content {
+  position: relative;
+  z-index: 1;
+  text-align: center;
+  max-width: 320px;
+}
+
+.art-content h2 {
+  font-size: 32px;
+  font-weight: 800;
+  line-height: 1.15;
+}
+
+.art-content p {
+  margin-top: 12px;
+  opacity: .9;
+  font-size: 14px;
+}
+
+/* ========== RESPONSIVE ========== */
 @media (max-width: 760px) {
-  .login-wrapper { grid-template-columns: 1fr; max-width: 440px; }
-  .login-art { display: none; }
-  .login-card { padding: 36px 28px; }
+  .login-wrapper {
+    grid-template-columns: 1fr;
+    max-width: 440px;
+  }
+  
+  .login-art {
+    display: none;
+  }
+  
+  .login-card {
+    padding: 36px 28px;
+  }
 }
