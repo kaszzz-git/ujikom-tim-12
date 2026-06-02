@@ -15,12 +15,12 @@
  */
 
 // URL Firebase Realtime Database Anda (tanpa trailing slash)
-define('FIREBASE_DB_URL', 'https://ujikom-tim-12-57934-default-rtdb.asia-southeast1.firebasedatabase.app');
+define('FIREBASE_DB_URL', 'ujikom-tim-12-57934-default-rtdb.asia-southeast1.firebasedatabase.app');
 
 // Database Secret (Legacy Token) — Ambil dari:
 // Firebase Console → Project Settings → Service Accounts → Database Secrets → Show
 // ATAU: atur Firebase Rules ke public write untuk testing (lihat README)
-define('FIREBASE_SECRET', '');   // <-- Isi jika menggunakan autentikasi
+define('FIREBASE_SECRET', 'qoI0KW1Y8LAbHpxq3wAWLoG3PmCVXAWPQSgtLlAK');   // <-- Isi jika menggunakan autentikasi
 
 // Jumlah maksimum entri riwayat yang disimpan di Firebase
 define('MAX_HISTORY', 50);
