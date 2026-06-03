@@ -6,6 +6,9 @@
   <title>Data Sensor | Monitoring IoT</title>
   <meta name="description" content="Halaman monitoring data sensor realtime dari semua perangkat IoT yang terhubung." />
   
+  <!-- Import font Plus Jakarta Sans -->
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+
   <style>
     * {
       margin: 0;
@@ -183,6 +186,11 @@
 
     .trend {
       font-size: 14px;
+    }
+
+    /* Perubahan: font khusus untuk value suhu, kelembapan, tekanan, cahaya */
+    #statSuhu, #statKelembapan, #statTekanan, #statCahaya {
+      font-family: 'Plus Jakarta Sans', sans-serif;
     }
 
     .gradient-1 {
@@ -381,9 +389,9 @@
               </tr>
             </thead>
             <tbody id="sensorTable">
-              <tr><td colspan="5" style="text-align:center; color:#9ca3af;">Memuat data...</td></tr>
+              <tr><td colspan="5" style="text-align:center; color:#9ca3af;">Memuat data......</td></tr>
             </tbody>
-          </table>
+          aplenty
         </div>
       </section>
     </main>
