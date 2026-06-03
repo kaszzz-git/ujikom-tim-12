@@ -11,454 +11,8 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 
-  <style>
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-    }
-
-    body {
-      font-family: 'Poppins', sans-serif;
-      background: #f8fafc;
-      overflow-x: hidden;
-    }
-
-    img {
-      max-width: 100%;
-      display: block;
-    }
-
-    a {
-      text-decoration: none;
-    }
-
-    .container {
-      width: min(1200px, 90%);
-      margin: auto;
-    }
-
-    /* NAVBAR */
-    .navbar {
-      position: fixed;
-      top: 0;
-      width: 100%;
-      z-index: 999;
-      backdrop-filter: blur(16px);
-      background: rgba(15, 23, 42, 0.8);
-      border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-    }
-
-    .nav-container {
-      height: 80px;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-    }
-
-    .logo {
-      display: flex;
-      align-items: center;
-      gap: 12px;
-      color: white;
-      font-size: 1.3rem;
-      font-weight: 600;
-    }
-
-    .logo img {
-      width: 45px;
-      background: #3b82f6;
-      border-radius: 12px;
-      padding: 5px;
-    }
-
-    .logo strong {
-      color: #3b82f6;
-    }
-
-    .nav-links {
-      display: flex;
-      align-items: center;
-      gap: 32px;
-      list-style: none;
-    }
-
-    .nav-links a {
-      color: #e2e8f0;
-      transition: 0.3s;
-      font-weight: 500;
-    }
-
-    .nav-links a:hover {
-      color: #3b82f6;
-    }
-
-    /* BUTTONS */
-    .btn {
-      padding: 12px 28px;
-      border-radius: 40px;
-      font-weight: 600;
-      transition: all 0.3s ease;
-      display: inline-flex;
-      align-items: center;
-      gap: 10px;
-      cursor: pointer;
-      border: none;
-    }
-
-    .btn-primary {
-      background: linear-gradient(135deg, #3b82f6, #2563eb);
-      color: white;
-      box-shadow: 0 8px 20px rgba(59, 130, 246, 0.3);
-    }
-
-    .btn-primary:hover {
-      transform: translateY(-3px);
-      box-shadow: 0 12px 28px rgba(59, 130, 246, 0.4);
-    }
-
-    .btn-outline {
-      border: 1px solid rgba(255, 255, 255, 0.3);
-      color: white;
-      background: rgba(255, 255, 255, 0.05);
-    }
-
-    .btn-outline:hover {
-      background: rgba(59, 130, 246, 0.2);
-      border-color: #3b82f6;
-    }
-
-    /* HERO */
-    .hero {
-      min-height: 100vh;
-      display: flex;
-      align-items: center;
-      position: relative;
-      overflow: hidden;
-      background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
-    }
-
-    .hero::before {
-      content: '';
-      position: absolute;
-      width: 500px;
-      height: 500px;
-      background: radial-gradient(circle, #3b82f633 0%, transparent 70%);
-      top: -150px;
-      right: -100px;
-    }
-
-    .hero::after {
-      content: '';
-      position: absolute;
-      width: 500px;
-      height: 500px;
-      background: radial-gradient(circle, #2563eb33 0%, transparent 70%);
-      bottom: -150px;
-      left: -100px;
-    }
-
-    .hero-content {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
-      gap: 60px;
-      align-items: center;
-      position: relative;
-      z-index: 1;
-    }
-
-    .badge {
-      display: inline-block;
-      padding: 8px 18px;
-      border-radius: 40px;
-      background: rgba(59, 130, 246, 0.15);
-      backdrop-filter: blur(4px);
-      border: 1px solid rgba(59, 130, 246, 0.3);
-      margin-bottom: 24px;
-      color: #93c5fd;
-      font-size: 0.85rem;
-      font-weight: 500;
-    }
-
-    .hero-text h1 {
-      font-size: 3.8rem;
-      line-height: 1.2;
-      margin-bottom: 20px;
-      color: white;
-    }
-
-    .gradient-text {
-      background: linear-gradient(135deg, #60a5fa, #a855f7);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-    }
-
-    .hero-text p {
-      color: #cbd5e1;
-      font-size: 1.1rem;
-      line-height: 1.7;
-      margin-bottom: 32px;
-    }
-
-    .hero-actions {
-      display: flex;
-      gap: 18px;
-      flex-wrap: wrap;
-    }
-
-    /* DASHBOARD MOCKUP */
-    .dashboard-box {
-      background: rgba(255, 255, 255, 0.05);
-      backdrop-filter: blur(20px);
-      border-radius: 32px;
-      padding: 28px;
-      border: 1px solid rgba(255, 255, 255, 0.1);
-      box-shadow: 0 25px 45px -12px rgba(0, 0, 0, 0.3);
-    }
-
-    .dashboard-top {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      margin-bottom: 20px;
-    }
-
-    .dashboard-top h3 {
-      color: white;
-      font-weight: 500;
-    }
-
-    .status {
-      display: flex;
-      align-items: center;
-      gap: 8px;
-      color: #4ade80;
-      font-size: 0.85rem;
-      background: rgba(74, 222, 128, 0.1);
-      padding: 6px 14px;
-      border-radius: 40px;
-    }
-
-    .pulse {
-      width: 10px;
-      height: 10px;
-      background: #4ade80;
-      border-radius: 50%;
-      animation: pulse 1.2s infinite;
-    }
-
-    @keyframes pulse {
-      0% { transform: scale(1); opacity: 1; }
-      100% { transform: scale(2.5); opacity: 0; }
-    }
-
-    .chart {
-      height: 220px;
-      background: linear-gradient(180deg, rgba(59, 130, 246, 0.2), rgba(59, 130, 246, 0));
-      border-radius: 20px;
-      margin-bottom: 20px;
-      position: relative;
-      overflow: hidden;
-    }
-
-    .chart::before {
-      content: '';
-      position: absolute;
-      bottom: 0;
-      left: 0;
-      width: 100%;
-      height: 70%;
-      background: repeating-linear-gradient(45deg, rgba(59,130,246,0.1) 0px, rgba(59,130,246,0.1) 2px, transparent 2px, transparent 8px);
-    }
-
-    .cards {
-      display: grid;
-      grid-template-columns: repeat(2, 1fr);
-      gap: 14px;
-    }
-
-    .mini-card {
-      background: rgba(255, 255, 255, 0.08);
-      border-radius: 20px;
-      padding: 16px;
-      transition: all 0.3s;
-    }
-
-    .mini-card:hover {
-      background: rgba(255, 255, 255, 0.12);
-      transform: translateY(-2px);
-    }
-
-    .mini-card small {
-      color: #94a3b8;
-      font-size: 0.7rem;
-      text-transform: uppercase;
-      letter-spacing: 1px;
-    }
-
-    .mini-card h2 {
-      color: white;
-      font-size: 1.6rem;
-      margin-top: 8px;
-    }
-
-    /* SECTIONS */
-    section {
-      padding: 100px 0;
-    }
-
-    .section-header {
-      text-align: center;
-      margin-bottom: 60px;
-    }
-
-    .section-header h2 {
-      font-size: 2.5rem;
-      background: linear-gradient(135deg, #0f172a, #1e293b);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      margin-bottom: 16px;
-    }
-
-    .section-header p {
-      color: #64748b;
-      font-size: 1.1rem;
-    }
-
-    /* FEATURES */
-    .features-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-      gap: 30px;
-    }
-
-    .feature-card {
-      background: white;
-      padding: 32px;
-      border-radius: 28px;
-      text-align: center;
-      transition: all 0.3s;
-      box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.05);
-      border: 1px solid #e2e8f0;
-    }
-
-    .feature-card:hover {
-      transform: translateY(-8px);
-      box-shadow: 0 20px 35px -10px rgba(59, 130, 246, 0.2);
-      border-color: #3b82f6;
-    }
-
-    .feature-icon {
-      font-size: 3rem;
-      margin-bottom: 20px;
-    }
-
-    .feature-card h3 {
-      margin-bottom: 12px;
-      color: #0f172a;
-    }
-
-    .feature-card p {
-      color: #64748b;
-      line-height: 1.6;
-    }
-
-    /* ABOUT */
-    .about {
-      background: linear-gradient(135deg, #f8fafc, #eff6ff);
-    }
-
-    .about-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-      gap: 50px;
-      align-items: center;
-    }
-
-    .about h2 {
-      font-size: 2.4rem;
-      margin-bottom: 24px;
-      color: #0f172a;
-    }
-
-    .about p {
-      color: #475569;
-      line-height: 1.8;
-      margin-bottom: 24px;
-    }
-
-    .check-list {
-      list-style: none;
-    }
-
-    .check-list li {
-      margin-bottom: 14px;
-      color: #334155;
-      font-weight: 500;
-    }
-
-    .about-img img {
-      border-radius: 32px;
-      box-shadow: 0 25px 40px -12px rgba(0, 0, 0, 0.2);
-      transition: transform 0.4s;
-    }
-
-    .about-img img:hover {
-      transform: scale(1.02);
-    }
-
-    /* FOOTER */
-    footer {
-      background: #0f172a;
-      color: #94a3b8;
-      text-align: center;
-      padding: 40px 0;
-      border-top: 1px solid #1e293b;
-    }
-
-    /* RESPONSIVE */
-    @media (max-width: 900px) {
-      .nav-links {
-        gap: 20px;
-      }
-      
-      .hero-text h1 {
-        font-size: 2.8rem;
-      }
-      
-      .hero-actions {
-        flex-direction: column;
-      }
-      
-      .btn {
-        width: 100%;
-        justify-content: center;
-      }
-    }
-
-    @media (max-width: 700px) {
-      .nav-links {
-        display: none;
-      }
-      
-      .hero-text h1 {
-        font-size: 2.2rem;
-      }
-      
-      .section-header h2 {
-        font-size: 2rem;
-      }
-      
-      .cards {
-        grid-template-columns: 1fr;
-      }
-      
-      .feature-card {
-        padding: 24px;
-      }
-    }
-  </style>
-
+  <!-- CSS -->
+  <link rel="stylesheet" href="css/style.css" />
 </head>
 
 <body>
@@ -468,7 +22,7 @@
     <div class="container nav-container">
 
       <a href="#" class="logo">
-        <img src="img/logo.png" alt="Logo" onerror="this.src='https://placehold.co/45x45?text=IoT'">
+        <img src="img/logo.png" alt="">
         <span>Monitoring<strong>IoT</strong></span>
       </a>
 
@@ -478,7 +32,7 @@
         <li><a href="#about">Tentang</a></li>
         <li>
           <a href="login.html" class="btn btn-primary">
-            🔐 Login
+            Login
           </a>
         </li>
       </ul>
@@ -511,11 +65,11 @@
 
         <div class="hero-actions">
           <a href="login.html" class="btn btn-primary">
-            🚀 Mulai Sekarang
+            Mulai Sekarang
           </a>
 
           <a href="#features" class="btn btn-outline">
-            ✨ Lihat Fitur
+            Lihat Fitur
           </a>
         </div>
 
@@ -525,11 +79,11 @@
       <div class="dashboard-box">
 
         <div class="dashboard-top">
-          <h3>📡 Realtime Monitoring</h3>
+          <h3>Realtime Monitoring</h3>
 
           <div class="status">
             <div class="pulse"></div>
-            Live
+            Online
           </div>
         </div>
 
@@ -538,22 +92,22 @@
         <div class="cards">
 
           <div class="mini-card">
-            <small>🌡️ Suhu</small>
+            <small>Suhu</small>
             <h2>27°C</h2>
           </div>
 
           <div class="mini-card">
-            <small>💧 Kelembapan</small>
+            <small>Kelembapan</small>
             <h2>76%</h2>
           </div>
 
           <div class="mini-card">
-            <small>✅ Status Sensor</small>
+            <small>Status Sensor</small>
             <h2>Aktif</h2>
           </div>
 
           <div class="mini-card">
-            <small>📟 Perangkat</small>
+            <small>Perangkat</small>
             <h2>12</h2>
           </div>
 
@@ -571,7 +125,7 @@
     <div class="container">
 
       <div class="section-header">
-        <h2>⚡ Fitur Unggulan</h2>
+        <h2>Fitur Unggulan</h2>
         <p>
           Dibuat untuk sistem monitoring IoT modern
         </p>
@@ -624,7 +178,7 @@
 
       <div>
 
-        <h2>📌 Tentang Platform</h2>
+        <h2>Tentang Platform</h2>
 
         <p>
           Sistem ini dirancang untuk mempermudah monitoring perangkat IoT
@@ -634,15 +188,15 @@
 
         <ul class="check-list">
           <li>✔ Integrasi mudah dengan ESP32 / ESP8266</li>
-          <li>✔ Mendukung banyak sensor (DHT22, BMP280, LDR, dll)</li>
+          <li>✔ Mendukung banyak sensor</li>
           <li>✔ Dashboard modern & elegan</li>
-          <li>✔ Sinkronisasi realtime tanpa delay</li>
+          <li>✔ Sinkronisasi realtime</li>
         </ul>
 
       </div>
 
       <div class="about-img">
-        <img src="img/background.jpg" alt="IoT Dashboard Preview" onerror="this.src='https://placehold.co/500x400?text=IoT+Preview'">
+        <img src="img/background.jpg" alt="">
       </div>
 
     </div>
@@ -652,7 +206,7 @@
   <!-- FOOTER -->
   <footer>
     <div class="container">
-      © 2026 Monitoring IoT Dashboard | Ujikom 2026/2027
+      © 2026 Monitoring IoT Dashboard ujikom 2026/2027
     </div>
   </footer>
 
