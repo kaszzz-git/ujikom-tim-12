@@ -27,6 +27,27 @@
     }
     /* Kecuali mungkin icon atau elemen khusus, tapi tetap gunakan Urbanist */
   </style>
+
+  <!-- TAMBAHAN: Aturan kursor agar berubah menjadi pointer pada elemen interaktif -->
+  <style>
+    /* Elemen yang dapat diklik (link, tombol, navigasi, card, dll.) */
+    a, button, .btn, .sidebar-nav a, .logout, .toggle-pass-btn,
+    select, input[type="checkbox"], label, .feature-card, .stat-card,
+    .mini-card, .dashboard-box, .nav-links li, .logo, .avatar,
+    .status-pill, .badge-pill, .panel-header select {
+      cursor: pointer;
+    }
+
+    /* Untuk teks biasa dan body tetap default */
+    body, p, h1, h2, h3, h4, span, div:not(.interactive) {
+      cursor: default;
+    }
+
+    /* Efek tambahan: ubah kursor menjadi grab saat di atas card (optional) */
+    .feature-card:hover, .stat-card:hover, .mini-card:hover {
+      cursor: pointer;
+    }
+  </style>
 </head>
 
 <body>
