@@ -6,13 +6,27 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Monitoring IoT | Smart Realtime Dashboard</title>
 
-  <!-- Font -->
+  <!-- Font Urbanist (ditambahkan) -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Urbanist:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+
+  <!-- Font Poppins (sebelumnya) tetap dipertahankan tapi tidak akan digunakan karena override -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 
-  <!-- CSS -->
+  <!-- CSS eksternal (tidak diubah) -->
   <link rel="stylesheet" href="css/style.css" />
+
+  <!-- Override font global menjadi Urbanist untuk seluruh teks di halaman -->
+  <style>
+    /* Pastikan semua elemen menggunakan Urbanist */
+    body, body * {
+      font-family: 'Urbanist', 'Poppins', sans-serif !important;
+    }
+    /* Kecuali mungkin icon atau elemen khusus, tapi tetap gunakan Urbanist */
+  </style>
 </head>
 
 <body>
